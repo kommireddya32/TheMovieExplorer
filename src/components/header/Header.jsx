@@ -1,6 +1,6 @@
 import { NavLink, useNavigate, useLocation } from "react-router-dom";
 import "./Header.css"
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useState, useCallback } from "react";
 import { searchMovies } from "../../assets/data";
 
 export default function Header({ mode, setMode, setCurrent, inputRef }) {
@@ -9,6 +9,7 @@ export default function Header({ mode, setMode, setCurrent, inputRef }) {
     const [suggestions, setSuggestions] = useState([]);
     const [showSuggestions, setShowSuggestions] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
+    const searchContainerRef = useRef(null);
     
     // Auto-focus search input when on search page
     useEffect(() => {
@@ -17,55 +18,6 @@ export default function Header({ mode, setMode, setCurrent, inputRef }) {
         }
     }, [location.pathname, inputRef]);
     
-    // Fetch search suggestions
-    useEffect(() => {
-        const fetchSuggestions = async () => {
-            if (searchQuery.trim().length > 2) {
-                const results = await searchMovies(searchQuery);
-                setSuggestions(results ? results.slice(0, 5) : []);
-                setShowSuggestions(true);
-            } else {
-                setSuggestions([]);
-                setShowSuggestions(false);
-            }
-        };
-        
-        const timer = setTimeout(() => {
-            fetchSuggestions();
-        }, 300); // Debounce for 300ms
-        
-        return () => clearTimeout(timer);
-    }, [searchQuery]);
-    
-    const handleSuggestionClick = async (title) => {
-        // Update the input value directly
-        if (inputRef.current) {
-            inputRef.current.value = title;
-            // Force update the searchQuery state
-            setSearchQuery(title);
-            // Close suggestions
-            setShowSuggestions(false);
-            // Navigate to search results
-            navigate(`/search?q=${encodeURIComponent(title)}`);
-            // Force a re-render of the search component
-            if (location.pathname === '/search') {
-                // If we're already on the search page, force a re-fetch
-                const results = await searchMovies(title);
-                // The SearchMovies component will handle updating the results
-            }
-        }
-    };
-    
-    const handleInputChange = (e) => {
-        const value = e.target.value;
-        setSearchQuery(value);
-        if (value.length > 2) {
-            setShowSuggestions(true);
-        } else {
-            setShowSuggestions(false);
-        }
-    };
-    
     function handleGenreChange(element) {
         setCurrent(1);
         const value = element.target.value;
@@ -73,17 +25,75 @@ export default function Header({ mode, setMode, setCurrent, inputRef }) {
         else navigate(`/${value}`);
     }
     
+    // Debounced search for suggestions
+    const fetchSuggestions = useCallback(async (query) => {
+        if (query.trim().length < 2) {
+            setSuggestions([]);
+            return;
+        }
+        
+        try {
+            const results = await searchMovies(query);
+            // Sort by popularity in descending order and take top 5
+            const sortedResults = [...results]
+                .sort((a, b) => b.popularity - a.popularity)
+                .slice(0, 5);
+            setSuggestions(sortedResults);
+        } catch (error) {
+            console.error('Error fetching suggestions:', error);
+            setSuggestions([]);
+        }
+    }, []);
+
+    // Handle input change with debounce
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            fetchSuggestions(searchQuery);
+        }, 300); // 300ms debounce
+
+        return () => clearTimeout(timer);
+    }, [searchQuery, fetchSuggestions]);
+
+    // Close suggestions when clicking outside
+    useEffect(() => {
+        function handleClickOutside(event) {
+            if (searchContainerRef.current && !searchContainerRef.current.contains(event.target)) {
+                setShowSuggestions(false);
+            }
+        }
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
+
     function handleSearch(e) {
-        e.preventDefault();
-        const searchValue = inputRef.current?.value.trim();
+        e?.preventDefault();
+        const searchValue = searchQuery.trim();
         if (searchValue) {
+            setShowSuggestions(false);
             navigate(`/search?q=${encodeURIComponent(searchValue)}`);
         }
+    }
+
+    function handleSuggestionClick(suggestion) {
+        setSearchQuery(suggestion.title);
+        setShowSuggestions(false);
+        navigate(`/search?q=${encodeURIComponent(suggestion.title)}`);
     }
 
     function handleKeyDown(e) {
         if (e.key === 'Enter') {
             handleSearch(e);
+        } else if (e.key === 'Escape') {
+            setShowSuggestions(false);
+        }
+    }
+
+    function handleInputFocus() {
+        if (searchQuery.length >= 2) {
+            setShowSuggestions(true);
         }
     }
 
@@ -139,37 +149,41 @@ export default function Header({ mode, setMode, setCurrent, inputRef }) {
                         <option value="western">Western</option>
                     </select>
                     
-                    <div className="search-container">
+                    <div className="search-container" ref={searchContainerRef}>
                         <div className="search-input-container">
                             <input 
                                 ref={inputRef} 
                                 type="text" 
                                 className="search-input" 
                                 placeholder="Search movies..." 
-                                onKeyDown={handleKeyDown}
-                                onChange={handleInputChange}
-                                onFocus={() => searchQuery.length > 2 && setShowSuggestions(true)}
-                                onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
-                                aria-label="Search movies"
-                                aria-autocomplete="list"
-                                aria-controls="search-suggestions"
                                 value={searchQuery}
+                                onChange={(e) => {
+                                    setSearchQuery(e.target.value);
+                                    setShowSuggestions(true);
+                                }}
+                                onFocus={handleInputFocus}
+                                onKeyDown={handleKeyDown}
+                                aria-label="Search movies"
+                                aria-haspopup="listbox"
+                                aria-expanded={showSuggestions && suggestions.length > 0}
                             />
                             {showSuggestions && suggestions.length > 0 && (
-                                <ul className="suggestions-dropdown" id="search-suggestions" role="listbox">
+                                <ul className="suggestions-dropdown" role="listbox">
                                     {suggestions.map((movie) => (
                                         <li 
                                             key={movie.id}
                                             className="suggestion-item"
-                                            onClick={() => handleSuggestionClick(movie.title || movie.name)}
-                                            onKeyDown={(e) => e.key === 'Enter' && handleSuggestionClick(movie.title || movie.name)}
+                                            onClick={() => handleSuggestionClick(movie)}
+                                            onKeyDown={(e) => e.key === 'Enter' && handleSuggestionClick(movie)}
                                             role="option"
                                             tabIndex={0}
                                         >
-                                            {movie.title || movie.name}
-                                            <span className="suggestion-year">
-                                                {movie.release_date ? new Date(movie.release_date).getFullYear() : ''}
-                                            </span>
+                                            <span>{movie.title}</span>
+                                            {movie.release_date && (
+                                                <span className="suggestion-year">
+                                                    {new Date(movie.release_date).getFullYear()}
+                                                </span>
+                                            )}
                                         </li>
                                     ))}
                                 </ul>
