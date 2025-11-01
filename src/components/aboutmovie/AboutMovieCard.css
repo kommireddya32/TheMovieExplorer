@@ -1,0 +1,927 @@
+/* Global Styles */
+:root {
+  --primary-color: #2c3e50;
+  --secondary-color: #e74c3c;
+  --accent-color: #3498db;
+  --text-color: #333;
+  --text-light: #7f8c8d;
+  --bg-light: #f8f9fa;
+  --white: #ffffff;
+  --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --transition: all 0.3s ease;
+}
+
+/* Light Mode */
+.light .about-movie-container {
+  --primary-color: #2c3e50;
+  --text-color: #2d3436;
+  --text-light: #636e72;
+  --bg-light: #f8f9fa;
+  --white: #ffffff;
+  --shadow: 0 4px 6px rgba(0, 0, 0, 0.08);
+  --card-bg: #ffffff;
+  --border-color: #e0e0e0;
+  background: var(--white);
+  color: var(--text-color);
+}
+
+.light .movie-poster {
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.light .overview {
+  background: #f9f9f9;
+  color: var(--text-color);
+}
+
+.light .genre-tag {
+  background: rgba(52, 152, 219, 0.1);
+  color: var(--accent-color);
+  border: 1px solid rgba(52, 152, 219, 0.2);
+}
+
+.light .ott-platform,
+.light .cast-member {
+  background: var(--white);
+  border: 1px solid var(--border-color);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.light .ott-platform:hover,
+.light .cast-member:hover {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.light .cast-photo {
+  border-bottom: 1px solid var(--border-color);
+}
+
+/* Dark Mode */
+.dark .about-movie-container {
+  --primary-color: #e8f4f8;
+  --text-color: #e8e8e8;
+  --text-light: #b2bec3;
+  --bg-light: #1a1a2e;
+  --white: #2d2d3a;
+  --shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  --card-bg: #2d2d3a;
+  --border-color: #3d3d4a;
+  background: #1e1e2e;
+  color: var(--text-color);
+}
+
+.dark .movie-info h1 {
+  color: var(--primary-color);
+}
+
+.dark .movie-meta {
+  color: var(--text-light);
+}
+
+.dark .overview {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-color);
+  border-left: 4px solid var(--accent-color);
+}
+
+.dark .genre-tag {
+  background: rgba(52, 152, 219, 0.2);
+  color: #4cc9f0;
+  border: 1px solid rgba(76, 201, 240, 0.3);
+}
+
+.dark .genre-tag:hover {
+  background: rgba(52, 152, 219, 0.3);
+}
+
+.dark .ott-section,
+.dark .cast-section {
+  border-color: var(--border-color);
+}
+
+.dark .ott-section h2,
+.dark .cast-section h2 {
+  color: var(--primary-color);
+}
+
+.dark .ott-platform,
+.dark .cast-member {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.dark .ott-platform:hover,
+.dark .cast-member:hover {
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  border-color: rgba(76, 201, 240, 0.3);
+}
+
+.dark .ott-name,
+.dark .cast-member h4,
+.dark .cast-member p {
+  color: var(--text-light);
+}
+
+.dark .cast-photo {
+  border-bottom: 1px solid var(--border-color);
+}
+
+.dark .movie-poster {
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+}
+
+.dark .trailer-container {
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.6;
+  color: var(--text-color);
+  background-color: var(--bg-light);
+}
+
+/* Layout */
+.about-movie-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  background: var(--white);
+  min-height: 100vh;
+  box-shadow: var(--shadow);
+  transition: var(--transition);
+}
+
+/* Body background for full page */
+body {
+  transition: background-color 0.3s ease;
+}
+
+.light {
+  background-color: #f8f9fa;
+}
+
+.dark {
+  background-color: #0f0f1a;
+}
+
+/* Theme Toggle Button - Fixed Position */
+.theme-toggle-btn-fixed {
+  position: fixed;
+  top: 2rem;
+  right: 2rem;
+  background: var(--white);
+  border: none;
+  color: var(--text-color);
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+  width: 60px;
+  height: 60px;
+  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.theme-toggle-btn-fixed:hover {
+  background: var(--accent-color);
+  color: var(--white);
+  transform: rotate(30deg) scale(1.1);
+  box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+}
+
+.dark .theme-toggle-btn-fixed {
+  background: #2d2d3a;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.dark .theme-toggle-btn-fixed:hover {
+  background: #4cc9f0;
+  color: var(--white);
+}
+
+.back-button {
+  background: var(--accent-color);
+  color: var(--white);
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 25px;
+  cursor: pointer;
+  margin-bottom: 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: var(--transition);
+  box-shadow: var(--shadow);
+}
+
+.back-button:hover {
+  background: #2980b9;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.movie-header {
+  display: flex;
+  gap: 3rem;
+  margin-bottom: 3rem;
+  flex-wrap: wrap;
+}
+
+.movie-poster {
+  flex: 0 0 300px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  transition: var(--transition);
+  background: #f5f5f5;
+  height: fit-content;
+}
+
+.movie-poster:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+.movie-poster img {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: var(--transition);
+}
+
+.movie-poster:hover img {
+  transform: scale(1.02);
+}
+
+.movie-info {
+  flex: 1;
+  min-width: 300px;
+}
+
+.movie-info h1 {
+  font-size: 2.5rem;
+  margin: 0 0 1rem 0;
+  color: var(--primary-color);
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.movie-info h1 span {
+  font-weight: 400;
+  color: var(--text-light);
+  margin-left: 0.75rem;
+  font-size: 1.8rem;
+}
+
+.movie-meta {
+  display: flex;
+  gap: 1.5rem;
+  margin: 1.5rem 0;
+  color: var(--text-light);
+  font-size: 0.95rem;
+  flex-wrap: wrap;
+}
+
+.rating {
+  color: #f1c40f;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.genres {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin: 1.5rem 0;
+}
+
+.genre-tag {
+  background: rgba(52, 152, 219, 0.1);
+  padding: 0.4rem 1rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  color: var(--accent-color);
+  font-weight: 500;
+  border: 1px solid rgba(52, 152, 219, 0.2);
+  transition: var(--transition);
+}
+
+.genre-tag:hover {
+  background: rgba(52, 152, 219, 0.2);
+  transform: translateY(-2px);
+}
+
+.overview {
+  line-height: 1.8;
+  margin: 2rem 0;
+  font-size: 1.1rem;
+  color: var(--text-color);
+  max-width: 800px;
+  background: #f9f9f9;
+  padding: 1.5rem;
+  border-radius: 8px;
+  border-left: 4px solid var(--accent-color);
+}
+
+.trailer-button {
+  background: var(--secondary-color);
+  color: var(--white);
+  border: none;
+  padding: 0.8rem 1.8rem;
+  border-radius: 30px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: var(--transition);
+  margin: 1.5rem 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: var(--shadow);
+}
+
+.trailer-button:hover {
+  background: #c0392b;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.trailer-container {
+  margin: 2rem 0;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  transition: var(--transition);
+}
+
+.trailer-container:hover {
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* OTT Platforms Section */
+.ott-section {
+  margin: 4rem 0;
+  padding: 2rem 0;
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+}
+
+.ott-section h2 {
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+  color: var(--primary-color);
+  position: relative;
+  display: inline-block;
+  padding-bottom: 0.5rem;
+}
+
+.ott-section h2::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 50px;
+  height: 3px;
+  background: var(--accent-color);
+  border-radius: 3px;
+}
+
+.ott-platforms {
+  margin: 1.5rem 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.ott-platform {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  transition: var(--transition);
+  width: 80px;
+  height: 100px;
+  text-align: center;
+  background: var(--white);
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  border: 1px solid #eee;
+}
+
+.ott-platform:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.ott-emoji {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  transition: var(--transition);
+  display: inline-block;
+}
+
+.ott-platform:hover .ott-emoji {
+  transform: scale(1.2) translateY(-3px);
+}
+
+.ott-name {
+  font-size: 0.8rem;
+  color: var(--text-light);
+  font-weight: 500;
+  margin-top: 0.5rem;
+  word-break: break-word;
+  width: 100%;
+}
+
+/* Cast Section */
+.cast-section {
+  margin: 4rem 0;
+}
+
+.cast-section h2 {
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+  color: var(--primary-color);
+  position: relative;
+  display: inline-block;
+  padding-bottom: 0.5rem;
+}
+
+.cast-section h2::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 50px;
+  height: 3px;
+  background: var(--accent-color);
+  border-radius: 3px;
+}
+
+.cast-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.cast-member {
+  text-align: center;
+  background: var(--white);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  transition: var(--transition);
+  position: relative;
+  padding-bottom: 1rem;
+}
+
+.cast-member:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.cast-photo {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-bottom: 1px solid #eee;
+}
+
+.cast-info {
+  padding: 1rem;
+}
+
+/* No Poster/Photo Placeholders */
+.no-poster,
+.no-photo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  text-align: center;
+  width: 100%;
+}
+
+.no-poster {
+  height: 450px;
+  border-radius: 12px;
+}
+
+.no-photo {
+  height: 200px;
+  font-size: 4rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.no-poster-icon {
+  font-size: 5rem;
+  margin-bottom: 1rem;
+  opacity: 0.9;
+}
+
+.no-poster p {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 0;
+  opacity: 0.9;
+}
+
+/* Dark mode adjustments for placeholders */
+.dark .no-poster,
+.dark .no-photo {
+  background: linear-gradient(135deg, #434343 0%, #000000 100%);
+}
+
+/* Light mode adjustments for placeholders */
+.light .no-poster,
+.light .no-photo {
+  background: linear-gradient(135deg, #a8c0ff 0%, #3f2b96 100%);
+}
+
+.cast-member h4 {
+  margin: 10px 0 5px 0;
+  font-size: 1rem;
+  color: #2c3e50;
+}
+
+.character {
+  color: #7f8c8d;
+  font-size: 0.9rem;
+  margin: 0 0 15px 0;
+  padding: 0 10px;
+}
+
+/* Loading and Error States */
+.loading,
+.error,
+.not-found {
+  text-align: center;
+  padding: 50px;
+  font-size: 1.2rem;
+  color: #7f8c8d;
+}
+
+.error {
+  color: #e74c3c;
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+  .about-movie-container {
+    padding: 1.5rem;
+  }
+  
+  .theme-toggle-btn-fixed {
+    top: 1.5rem;
+    right: 1.5rem;
+    width: 55px;
+    height: 55px;
+    font-size: 1.4rem;
+  }
+  
+  .movie-header {
+    gap: 2rem;
+  }
+  
+  .movie-poster {
+    flex: 0 0 250px;
+  }
+  
+  .movie-info h1 {
+    font-size: 2rem;
+  }
+  
+  .movie-info h1 span {
+    font-size: 1.5rem;
+  }
+  
+  .ott-section,
+  .cast-section {
+    margin: 3rem 0;
+  }
+  
+  .cast-grid {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 1.25rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .about-movie-container {
+    padding: 1.25rem;
+  }
+  
+  .theme-toggle-btn-fixed {
+    top: 1rem;
+    right: 1rem;
+    width: 50px;
+    height: 50px;
+    font-size: 1.3rem;
+  }
+  
+  .back-button {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
+  }
+  
+  .movie-header {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  .movie-poster {
+    flex: 0 0 auto;
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto;
+  }
+  
+  .movie-info {
+    min-width: 100%;
+  }
+  
+  .movie-info h1 {
+    font-size: 1.75rem;
+    text-align: center;
+  }
+  
+  .movie-info h1 span {
+    font-size: 1.3rem;
+  }
+  
+  .movie-meta {
+    justify-content: center;
+    font-size: 0.9rem;
+  }
+  
+  .genres {
+    justify-content: center;
+  }
+  
+  .genre-tag {
+    font-size: 0.8rem;
+    padding: 0.35rem 0.85rem;
+  }
+  
+  .overview {
+    font-size: 1rem;
+    padding: 1.25rem;
+  }
+  
+  .trailer-button {
+    padding: 0.7rem 1.5rem;
+    font-size: 0.95rem;
+  }
+  
+  .ott-section h2,
+  .cast-section h2 {
+    font-size: 1.5rem;
+  }
+  
+  .ott-platforms {
+    gap: 1rem;
+    justify-content: center;
+  }
+  
+  .ott-platform {
+    width: 70px;
+    height: 90px;
+    padding: 0.75rem;
+  }
+  
+  .ott-emoji {
+    font-size: 1.75rem;
+  }
+  
+  .ott-name {
+    font-size: 0.75rem;
+  }
+  
+  .cast-grid {
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 1rem;
+  }
+  
+  .cast-photo {
+    height: 180px;
+  }
+  
+  .cast-info {
+    padding: 0.75rem;
+  }
+  
+  .cast-member h4 {
+    font-size: 0.9rem;
+  }
+  
+  .character {
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .about-movie-container {
+    padding: 1rem;
+    margin: 0;
+    max-width: 100%;
+    box-shadow: none;
+  }
+  
+  .theme-toggle-btn-fixed {
+    top: 0.75rem;
+    right: 0.75rem;
+    width: 45px;
+    height: 45px;
+    font-size: 1.2rem;
+  }
+  
+  .back-button {
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .movie-poster {
+    max-width: 250px;
+  }
+  
+  .movie-info h1 {
+    font-size: 1.5rem;
+  }
+  
+  .movie-info h1 span {
+    font-size: 1.1rem;
+    display: block;
+    margin-left: 0;
+    margin-top: 0.25rem;
+  }
+  
+  .movie-meta {
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: center;
+  }
+  
+  .genre-tag {
+    font-size: 0.75rem;
+    padding: 0.3rem 0.75rem;
+  }
+  
+  .overview {
+    font-size: 0.95rem;
+    padding: 1rem;
+  }
+  
+  .trailer-button {
+    padding: 0.6rem 1.25rem;
+    font-size: 0.9rem;
+    width: 100%;
+  }
+  
+  .trailer-container iframe {
+    height: 250px;
+  }
+  
+  .ott-section,
+  .cast-section {
+    margin: 2.5rem 0;
+  }
+  
+  .ott-section h2,
+  .cast-section h2 {
+    font-size: 1.3rem;
+  }
+  
+  .ott-platforms {
+    gap: 0.75rem;
+  }
+  
+  .ott-platform {
+    width: 60px;
+    height: 80px;
+    padding: 0.5rem;
+  }
+  
+  .ott-emoji {
+    font-size: 1.5rem;
+  }
+  
+  .ott-name {
+    font-size: 0.7rem;
+  }
+  
+  .cast-grid {
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    gap: 0.75rem;
+  }
+  
+  .cast-photo {
+    height: 150px;
+  }
+  
+  .cast-info {
+    padding: 0.5rem;
+  }
+  
+  .cast-member h4 {
+    font-size: 0.85rem;
+  }
+  
+  .character {
+    font-size: 0.8rem;
+  }
+  
+  .no-poster {
+    height: 350px;
+  }
+  
+  .no-poster-icon {
+    font-size: 4rem;
+  }
+  
+  .no-poster p {
+    font-size: 1rem;
+  }
+  
+  .no-photo {
+    height: 150px;
+    font-size: 3rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .about-movie-container {
+    padding: 0.75rem;
+  }
+  
+  .theme-toggle-btn-fixed {
+    top: 0.5rem;
+    right: 0.5rem;
+    width: 40px;
+    height: 40px;
+    font-size: 1.1rem;
+  }
+  
+  .movie-poster {
+    max-width: 200px;
+  }
+  
+  .movie-info h1 {
+    font-size: 1.3rem;
+  }
+  
+  .ott-platform {
+    width: 55px;
+    height: 75px;
+  }
+  
+  .ott-emoji {
+    font-size: 1.3rem;
+  }
+  
+  .ott-name {
+    font-size: 0.65rem;
+  }
+  
+  .cast-grid {
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 0.5rem;
+  }
+  
+  .cast-photo {
+    height: 130px;
+  }
+  
+  .cast-member h4 {
+    font-size: 0.8rem;
+  }
+  
+  .character {
+    font-size: 0.75rem;
+  }
+}
