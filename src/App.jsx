@@ -5,7 +5,7 @@ import { useRef, useState } from "react";
 import GenreFetch from "./components/genre/GenreFetch";
 import TopRated from "./components/toprated/TopRated";
 import NotFound from "./NotFound";
-import UpComing from "./components/upcoming/Upcoming";
+import UpComing from "./components/upcoming/UpComing";
 import NowPlaying from "./components/nowplaying/NowPlaying";
 import SearchMovies from "./components/searchmovies/SearchMovies";
 import AboutMovieCard from "./components/aboutmovie/AboutMovieCard";
