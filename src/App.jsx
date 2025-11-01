@@ -1,5 +1,5 @@
 import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from "react-router-dom";
-import RootLayout from "./components/layout/RootLayout";
+import RootLayout from "./components/Layout/RootLayout";
 import Home from "./components/home/Home";
 import { useRef, useState } from "react";
 import GenreFetch from "./components/genre/GenreFetch";
