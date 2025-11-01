@@ -28,14 +28,15 @@ export default function Footer(props){
     return (
         <>
             <div className="pagination-container">
-                <button 
-                    className="pagination-btn first-page" 
-                    onClick={goToFirstPage}
-                    disabled={props.current === 1}
-                    title="Go to first page"
-                >
-                    First
-                </button>
+                {props.current > 1 && (
+                    <button 
+                        className="pagination-btn first-page" 
+                        onClick={goToFirstPage}
+                        title="Go to first page"
+                    >
+                        Go to First Page
+                    </button>
+                )}
                 <button 
                     className="pagination-btn prev-page" 
                     onClick={previous}

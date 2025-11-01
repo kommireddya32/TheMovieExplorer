@@ -180,6 +180,8 @@
 
 .pagination-btn.first-page {
   min-width: 70px;
+  padding: 0.5rem 1.5rem;
+  margin: 0 0.5rem;
 }
 
 .pagination-btn.prev-page,
@@ -309,6 +311,11 @@
     font-size: 0.95rem;
   }
   
+  .pagination-btn.first-page {
+    padding: 0.55rem 1.8rem;
+    margin: 0 0.4rem;
+  }
+  
   .page-number {
     padding: 0.55rem 0.9rem;
     min-width: 42px;
@@ -364,6 +371,11 @@
     padding: 0.5rem 1.2rem;
     min-width: 85px;
     font-size: 0.9rem;
+  }
+  
+  .pagination-btn.first-page {
+    padding: 0.5rem 1.7rem;
+    margin: 0 0.4rem;
   }
   
   .number-list {
@@ -435,7 +447,8 @@
   }
   
   .pagination-btn.first-page {
-    min-width: 50px;
+    padding: 0.4rem 1.1rem;
+    margin: 0 0.3rem;
   }
   
   .pagination-btn.prev-page,
@@ -515,6 +528,11 @@
     min-width: 55px;
     font-size: 0.7rem;
     height: 32px;
+  }
+  
+  .pagination-btn.first-page {
+    padding: 0.4rem 1rem;
+    margin: 0 0.2rem;
   }
   
   .number-list {
