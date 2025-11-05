@@ -1,7 +1,17 @@
+// Helper function to build proxy URL
+const buildProxyUrl = (endpoint, params = {}) => {
+    const url = new URL('/.netlify/functions/tmdb-proxy', window.location.origin);
+    url.searchParams.append('endpoint', endpoint);
+    Object.entries(params).forEach(([key, value]) => {
+        url.searchParams.append(key, value);
+    });
+    return url.toString();
+};
+
 export async function getTrendngMovies(page=1) {
     let data=[];
     try{
-        let response = await fetch(`https://api.themoviedb.org/3/movie/popular?api_key=cfbf330bed072f394c0064b13dcb6f3e&page=${page}`);
+        let response = await fetch(buildProxyUrl('/movie/popular', { page }));
         data = await response.json();
         return data.results;
     }
@@ -19,8 +29,13 @@ export async function getUpcomingMovies(page=1) {
     try{
         const today = new Date().toISOString().split("T")[0];
 
-        let response = await fetch(`https://api.themoviedb.org/3/discover/movie?api_key=cfbf330bed072f394c0064b13dcb6f3e&sort_by=primary_release_date.asc&primary_release_date.gte=${today}&vote_count.gte=0&language=en-US&page=${page}`
-);
+        let response = await fetch(buildProxyUrl('/discover/movie', {
+            page,
+            'sort_by': 'primary_release_date.asc',
+            'primary_release_date.gte': today,
+            'vote_count.gte': 0,
+            'language': 'en-US'
+        }));
         data = await response.json();
         console.log(data);
         return data.results;
@@ -35,7 +50,7 @@ export async function getUpcomingMovies(page=1) {
 export async function getTopRatedMovies(page=1) {
     let data=[];
     try{
-        let response = await fetch(`https://api.themoviedb.org/3/movie/top_rated?api_key=cfbf330bed072f394c0064b13dcb6f3e&page=${page}`);
+        let response = await fetch(buildProxyUrl('/movie/top_rated', { page }));
         data = await response.json();
         return data.results;
     }
@@ -50,9 +65,11 @@ export async function getTopRatedMovies(page=1) {
 export async function getNowPlayingMovies(page=1) {
     let data = [];
     try {
-        const url = `https://api.themoviedb.org/3/movie/now_playing?api_key=cfbf330bed072f394c0064b13dcb6f3e&region=FR&language=fr-FR&page=${page}`;
-        
-        let response = await fetch(url);
+        let response = await fetch(buildProxyUrl('/movie/now_playing', {
+            page,
+            region: 'FR',
+            language: 'fr-FR'
+        }));
         
         if (!response.ok) {
              throw new Error(`HTTP error! status: ${response.status}`);
@@ -71,7 +88,10 @@ export async function getGenre(genreId=28,page=1) {
 
     let data=[];
     try{
-        let response = await fetch(`https://api.themoviedb.org/3/discover/movie?api_key=cfbf330bed072f394c0064b13dcb6f3e&with_genres=${genreId}&page=${page}`);
+        let response = await fetch(buildProxyUrl('/discover/movie', {
+            with_genres: genreId,
+            page
+        }));
         data = await response.json();
         return data.results;
     }
@@ -84,7 +104,7 @@ export async function getGenre(genreId=28,page=1) {
 export async function searchMovies(searchterm){
     let data;
     try{
-        let response = await fetch(`https://api.themoviedb.org/3/search/movie?api_key=cfbf330bed072f394c0064b13dcb6f3e&query=${searchterm}`);
+        let response = await fetch(buildProxyUrl('/search/movie', { query: searchterm }));
         let d = await response.json();
         data=d.results;
     }
@@ -97,9 +117,7 @@ export async function searchMovies(searchterm){
 
 export async function getMovieProviders(movieId, region = 'US') {
     try {
-        const response = await fetch(
-            `https://api.themoviedb.org/3/movie/${movieId}/watch/providers?api_key=cfbf330bed072f394c0064b13dcb6f3e`
-        );
+        const response = await fetch(buildProxyUrl(`/movie/${movieId}/watch/providers`));
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -128,9 +146,7 @@ export async function getMovieProviders(movieId, region = 'US') {
 
 export async function getMovieDetails(movieId) {
     try {
-        const response = await fetch(
-            `https://api.themoviedb.org/3/movie/${movieId}?api_key=cfbf330bed072f394c0064b13dcb6f3e`
-        );
+        const response = await fetch(buildProxyUrl(`/movie/${movieId}`));
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -143,9 +159,7 @@ export async function getMovieDetails(movieId) {
 
 export async function getMovieCredits(movieId) {
     try {
-        const response = await fetch(
-            `https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=cfbf330bed072f394c0064b13dcb6f3e`
-        );
+        const response = await fetch(buildProxyUrl(`/movie/${movieId}/credits`));
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -158,9 +172,7 @@ export async function getMovieCredits(movieId) {
 
 export async function getMovieVideos(movieId) {
     try {
-        const response = await fetch(
-            `https://api.themoviedb.org/3/movie/${movieId}/videos?api_key=cfbf330bed072f394c0064b13dcb6f3e`
-        );
+        const response = await fetch(buildProxyUrl(`/movie/${movieId}/videos`));
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
